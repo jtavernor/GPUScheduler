@@ -13,9 +13,10 @@ class PickleFunction:
         self.log_dir = log_dir
         self.run_fn = run_fn
 
-    def __call__(self, script_name, grouping=None, **args):
+    def __call__(self, script_name, **args):
         torch.multiprocessing.set_sharing_strategy('file_system')
-        if grouping is not None:
+        if 'grouping' in args:
+            grouping = args['grouping']
             mkdirp(f"{self.log_dir}/{grouping}")
             log_file = os.path.join(self.log_dir, f'{grouping}/{script_name}.log')
         else:
